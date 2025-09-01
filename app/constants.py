@@ -1,0 +1,1 @@
+REQUEST_ID_SIZE = 12

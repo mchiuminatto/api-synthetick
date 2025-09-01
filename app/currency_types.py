@@ -40,8 +40,8 @@ class TredeDelta(float, Enum):
 class PriceDataRequest(BaseModel):
     currency_code: CurrencyPair
     time_frame: TimeFrame
-    start_date: str  # ISO format date string
-    end_date: str | None = None  # ISO format date string, optional
+    start_date: datetime  # ISO format date string
+    end_date: datetime | None = None  # ISO format date string, optional
     records: int | None = 1000  # Optional, default to 1000
     trend: float | TredeDelta = 0.0  # Optional, default to 0.0
         
