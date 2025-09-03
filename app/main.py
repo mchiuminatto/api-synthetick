@@ -58,6 +58,7 @@ async def gen_price_by_start_date_and_records(
     """Generate synthetic data for a given currency code,
     starting from a specific date, and for a
     specified number of records."""
+    
 
     return {
         "symbol": currency_code,
