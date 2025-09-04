@@ -7,6 +7,8 @@ from fastapi import FastAPI, Query
 from pydantic import BaseModel
 from .currency_types import PriceDataRequest, CurrencyPair, TimeFrame
 from . import constants as const
+from app.mem_cache import MemCacheFactory
+
 
 
 app = FastAPI()
