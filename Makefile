@@ -12,3 +12,7 @@ docker-compose-up:
 
 docker-compose-down:
 	docker compose down
+
+
+local-develop:
+	export RUNNING_LOCALLY=True
