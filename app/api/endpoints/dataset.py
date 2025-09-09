@@ -54,6 +54,8 @@ async def gen_price_by_start_date_and_records(
     specified number of records."""
     
     # set session in memcache
+    
+    # TODO: use dependency injection 
     mem_cache = MemCacheFactory.create_mem_cache(technology="redis")
     session_key = gen_random_alfa(const.REQUEST_ID_SIZE)
     mem_cache.set(f"{session_key}:status", "not-started")

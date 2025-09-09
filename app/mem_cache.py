@@ -1,8 +1,9 @@
 import redis
+import app.constants as const
 
 
 class MemCache:
-    def __init__(self, host="localhost", port=6379, db=0):
+    def __init__(self, **kwargs):
         pass
 
     def set(self, key, value):
@@ -21,8 +22,10 @@ class MemCacheFactory:
 
 
 class RedisMemCache(MemCache):
-    def __init__(self, host="localhost", port=6379, db=0):
-        self.client = redis.StrictRedis(host=host, port=port, db=db)
+    def __init__(self):
+        self.client = redis.Redis(host=const.REDIS_HOST, 
+                                  port=const.REDIS_PORT, 
+                                  db=const.REDIS_DB)
 
     def set(self, key, value):
         self.client.set(key, value)
