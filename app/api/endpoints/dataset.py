@@ -1,19 +1,26 @@
 from datetime import datetime
 from typing import Annotated
 
+from redis import Redis
+
 from fastapi import APIRouter
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, Depends
 
 from app.currency_types import PriceDataRequest, CurrencyPair, TimeFrame
-from app.mem_cache import MemCacheFactory
-from app import constants as const
+import app.constants as const
 from app.utils import gen_random_alfa
+from app.api.dependencies import pool
+
 
 router = APIRouter()
 
+def get_redis() -> Redis:
+    return Redis(connection_pool=pool)
+
+
 @router.post("/request/")
-async def gen_price_by_start_date_and_records(
-    currency_code: Annotated[
+def gen_price_by_start_date_and_records(
+        currency_code: Annotated[
         CurrencyPair,
         Query(
             title="Currency Code",
@@ -48,6 +55,8 @@ async def gen_price_by_start_date_and_records(
             description="The number of records to generate. Optional, default is 1000.",
         ),
     ] = 1000,
+    redis_cli: Redis = Depends(get_redis)
+
 ):
     """Generate synthetic data for a given currency code,
     starting from a specific date, and for a
@@ -56,10 +65,10 @@ async def gen_price_by_start_date_and_records(
     # set session in memcache
     
     # TODO: use dependency injection 
-    mem_cache = MemCacheFactory.create_mem_cache(technology="redis")
+    
     session_key = gen_random_alfa(const.REQUEST_ID_SIZE)
-    mem_cache.set(f"{session_key}:status", "not-started")
-    mem_cache.set(f"{session_key}:records-processed", 0)
+    redis_cli.set(f"{session_key}:status", "not-started")
+    redis_cli.set(f"{session_key}:records-processed", 0)
     
     # trigger background task to generate data (not implemented)
 
@@ -85,8 +94,12 @@ def get_status(
             max_length=const.REQUEST_ID_SIZE,
         ),
     ],
+
+    redis_cli: Redis = Depends(get_redis)
 ):
-    return {"status": "API is running", "records-generated": 0}
+    process_status = redis_cli.get(f"{request_id}:status")
+    records_generated = redis_cli.get(f"{request_id}:records-processed")
+    return {"status": process_status, "records-generated": records_generated}
 
 
 @router.get("/data/")

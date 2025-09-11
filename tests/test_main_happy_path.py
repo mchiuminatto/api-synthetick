@@ -17,7 +17,7 @@ def test_read_main():
 
 def test_request_data_date_records():
     response = client.post(
-        "/forex/request/?currency_code=EURUSD&time_frame=M1&start_date=2023-01-01T00:00:00&records=500"
+        "api/v1/forex/request/?currency_code=EURUSD&time_frame=M1&start_date=2023-01-01T00:00:00&records=500"
     )
     assert response.status_code == 200
     data = response.json()

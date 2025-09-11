@@ -7,10 +7,10 @@ lint:
 docker-run:
 	docker run -p 8000:8000 mchiuminatto/api-synthetick
 
-docker-compose-up:
+dk-up:
 	docker compose up --build
 
-docker-compose-down:
+dk-dn:
 	docker compose down
 
 
