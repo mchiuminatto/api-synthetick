@@ -1,0 +1,9 @@
+.git/
+.gitignore
+.vscode/
+tests/
+.pytest_cache/
+.env
+LICENSE
+docker.logs
+Makefile
