@@ -4,18 +4,32 @@ from typing import Annotated
 from redis import Redis
 
 from fastapi import APIRouter
+<<<<<<< HEAD
+from fastapi import Query, Path, Depends
+
+from app.currency_types import CurrencyPair, TimeFrame
+import app.common.constants as const
+from app.common.utils import gen_random_alfa
+from app.common.mem_cache import mem_cache, MemCache
+=======
 from fastapi import FastAPI, Query, Path, Depends
 
 from app.currency_types import PriceDataRequest, CurrencyPair, TimeFrame
 import app.constants as const
 from app.utils import gen_random_alfa
 from app.api.dependencies import pool
+>>>>>>> main
 
 
 router = APIRouter()
 
+<<<<<<< HEAD
+def get_mem_cache() -> MemCache:
+    return mem_cache
+=======
 def get_redis() -> Redis:
     return Redis(connection_pool=pool)
+>>>>>>> main
 
 
 @router.post("/request/")
@@ -55,7 +69,11 @@ def gen_price_by_start_date_and_records(
             description="The number of records to generate. Optional, default is 1000.",
         ),
     ] = 1000,
+<<<<<<< HEAD
+    mem_cache_cli: Redis = Depends(get_mem_cache)
+=======
     redis_cli: Redis = Depends(get_redis)
+>>>>>>> main
 
 ):
     """Generate synthetic data for a given currency code,
@@ -67,8 +85,13 @@ def gen_price_by_start_date_and_records(
     # TODO: use dependency injection 
     
     session_key = gen_random_alfa(const.REQUEST_ID_SIZE)
+<<<<<<< HEAD
+    mem_cache_cli.set(session_key, "status", "not-started")
+    mem_cache_cli.set(session_key, "records-processed", 0)
+=======
     redis_cli.set(f"{session_key}:status", "not-started")
     redis_cli.set(f"{session_key}:records-processed", 0)
+>>>>>>> main
     
     # trigger background task to generate data (not implemented)
 
@@ -83,6 +106,10 @@ def gen_price_by_start_date_and_records(
     }
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> main
 @router.get("/status/{request_id}")
 def get_status(
     request_id: Annotated[
@@ -94,11 +121,18 @@ def get_status(
             max_length=const.REQUEST_ID_SIZE,
         ),
     ],
+<<<<<<< HEAD
+    mem_cache_cli: MemCache = Depends(get_mem_cache)
+):
+    process_status = mem_cache_cli.get(request_id, "status")
+    records_generated = mem_cache_cli.get(request_id, "records-processed")
+=======
 
     redis_cli: Redis = Depends(get_redis)
 ):
     process_status = redis_cli.get(f"{request_id}:status")
     records_generated = redis_cli.get(f"{request_id}:records-processed")
+>>>>>>> main
     return {"status": process_status, "records-generated": records_generated}
 
 
