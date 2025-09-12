@@ -3,7 +3,7 @@ from string import ascii_uppercase, digits
 
 from app.main import app
 from fastapi.testclient import TestClient
-import app.constants as const
+import app.common.constants as const
 
 
 client = TestClient(app)
