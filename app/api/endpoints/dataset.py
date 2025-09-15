@@ -13,7 +13,6 @@ from app.common.utils import gen_random_alfa
 from app.common.mem_cache import mem_cache, MemCache
 
 
-
 router = APIRouter()
 
 def get_mem_cache() -> MemCache:
@@ -57,9 +56,8 @@ def gen_price_by_start_date_and_records(
             description="The number of records to generate. Optional, default is 1000.",
         ),
     ] = 1000,
+
     mem_cache_cli: Redis = Depends(get_mem_cache)
-
-
 ):
     """Generate synthetic data for a given currency code,
     starting from a specific date, and for a
@@ -70,8 +68,10 @@ def gen_price_by_start_date_and_records(
     # TODO: use dependency injection 
     
     session_key = gen_random_alfa(const.REQUEST_ID_SIZE)
+
     mem_cache_cli.set(session_key, "status", "not-started")
     mem_cache_cli.set(session_key, "records-processed", 0)
+
 
     
     # trigger background task to generate data (not implemented)
@@ -98,10 +98,11 @@ def get_status(
             max_length=const.REQUEST_ID_SIZE,
         ),
     ],
+
     mem_cache_cli: MemCache = Depends(get_mem_cache)
 ):
     process_status = mem_cache_cli.get(request_id, "status")
-    records_generated = mem_cache_cli.get(request_id, "records-processed")
+
     return {"status": process_status, "records-generated": records_generated}
 
 
