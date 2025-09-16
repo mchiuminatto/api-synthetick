@@ -15,6 +15,7 @@ class MemCache(abc.ABC):
     def delete(self, request_id: str, value_key: str):
         pass
 
+
 class MemCacheFactory:
     @staticmethod
     def get_cache(cache_type: str) -> MemCache:
@@ -27,8 +28,8 @@ class MemCacheFactory:
 class RedisCache(MemCache):
     def __init__(self):
         pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True,
-                                           encoding="UTF-8"
-                                           )
+                                    encoding="UTF-8"
+                                    )
         self._client = redis.Redis(connection_pool=pool)
 
     def get(self, request_id: str, value_key: str):

@@ -1,7 +1,6 @@
 from app.common.mem_cache import MemCacheFactory
 
 
-
 class TestMemCache:
     def setup_method(self):
         self.mem_cache = MemCacheFactory.get_cache("redis")
@@ -9,11 +8,9 @@ class TestMemCache:
         self.test_key = "test_key"
         self.test_value = "2000"
 
-
     def test_set_and_get(self):
         # Test setting a value
         self.mem_cache.set(self.test_request_id, self.test_key, self.test_value)
-
 
         # Test getting the value
         get_result = self.mem_cache.get(self.test_request_id, self.test_key)

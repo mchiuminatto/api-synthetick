@@ -7,4 +7,5 @@ def create_redis():
     return redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True, encoding="UTF-8"
                                 )
 
+
 pool = create_redis()

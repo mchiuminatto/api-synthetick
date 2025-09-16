@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import Enum
 from pydantic import BaseModel
 
+
 class CurrencyPair(str, Enum):
     EURUSD = "EURUSD"
     USDJPY = "USDJPY"
@@ -27,7 +28,7 @@ class TimeFrame(str, Enum):
     D1 = "D1"  # Daily
     W1 = "W1"  # Weekly
     MN = "MN"  # Monthly
-    
+
 
 class TredeDelta(float, Enum):
     FLAT = 0
@@ -35,7 +36,7 @@ class TredeDelta(float, Enum):
     UP_STRONG = 1
     DOWN_STRONG = -1
     DOWN_WEAK = -0.1
-    
+
 
 class PriceDataRequest(BaseModel):
     currency_code: CurrencyPair
@@ -44,4 +45,3 @@ class PriceDataRequest(BaseModel):
     end_date: datetime | None = None  # ISO format date string, optional
     records: int | None = 1000  # Optional, default to 1000
     trend: float | TredeDelta = 0.0  # Optional, default to 0.0
-        
