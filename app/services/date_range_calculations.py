@@ -1,0 +1,2 @@
+class PeriodsCalculator:
+    pass

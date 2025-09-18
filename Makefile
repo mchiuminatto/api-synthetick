@@ -13,6 +13,8 @@ dk-up:
 dk-dn:
 	docker compose down
 
+test:
+	coverage run -m pytest
 
-local-develop:
-	export RUNNING_LOCALLY=True
+cov-report:
+	coverage report -m
