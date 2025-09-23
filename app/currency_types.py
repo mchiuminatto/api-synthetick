@@ -1,8 +1,20 @@
 from datetime import datetime
-
+from typing import Annotated
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
+
+class PriceSide(str, Enum):
+    BID = "bid"
+    ASK = "ask"
+
+class InstrumentType(str, Enum):
+    FOREX = "forex"
+    STOCK = "stock"
+    CRYPTO = "crypto"
+    COMMODITY = "commodity"
+    ETF = "etf"
+    INDEX = "index"
 
 class CurrencyPair(str, Enum):
     EURUSD = "EURUSD"
@@ -19,18 +31,19 @@ class CurrencyPair(str, Enum):
 
 
 class TimeFrame(str, Enum):
-    M1 = "M1"  # 1 minute
-    M5 = "M5"  # 5 minutes
-    M15 = "M15"  # 15 minutes
-    M30 = "M30"  # 30 minutes
-    H1 = "H1"  # 1 hour
-    H4 = "H4"  # 4 hours
-    D1 = "D1"  # Daily
-    W1 = "W1"  # Weekly
+    TICK = "1S"  # Tick data
+    M1 = "1M"  # 1 minute
+    M5 = "5M"  # 5 minutes
+    M15 = "15M"  # 15 minutes
+    M30 = "30M"  # 30 minutes
+    H1 = "1H"  # 1 hour
+    H4 = "4H"  # 4 hours
+    D1 = "1D"  # Daily
+    W1 = "1W"  # Weekly
     MN = "MN"  # Monthly
 
 
-class TredeDelta(float, Enum):
+class Trend(float, Enum):
     FLAT = 0
     UP_WEAK = 0.1
     UP_STRONG = 1
@@ -38,10 +51,15 @@ class TredeDelta(float, Enum):
     DOWN_WEAK = -0.1
 
 
-class PriceDataRequest(BaseModel):
-    currency_code: CurrencyPair
-    time_frame: TimeFrame
-    start_date: datetime  # ISO format date string
-    end_date: datetime | None = None  # ISO format date string, optional
-    records: int | None = 1000  # Optional, default to 1000
-    trend: float | TredeDelta = 0.0  # Optional, default to 0.0
+class PriceDatasetRequest(BaseModel):
+    symbol: Annotated[CurrencyPair, Field(title="Symbol code")]
+    start_date: Annotated[datetime, Field(title="Start date")]
+    end_date: Annotated[datetime | None, Field(title="End date of the range. "
+                                                     "Optional and ignored if 'records' > 0")] = None
+    trend: Annotated[float | None, Field(title="Trend direction and strength. Positive for upward trend, "
+                                               "negative for downward trend, zero for no trend")] = 0.0
+    volatility: Annotated[float | None, Field(title="Volatility level. "
+                                                    "Higher values indicate more price fluctuations", ge=0)] = 0.1
+    spred_max: Annotated[float | None, Field(title="Maximum spread value", gt=0)] = 0.001
+    spread_min: Annotated[float | None, Field(title="Minimum spread value", gt=0)] = 0.0001
+    records: Annotated[int | None, Field(description="Number of records to produce", gt=0)] = 1000

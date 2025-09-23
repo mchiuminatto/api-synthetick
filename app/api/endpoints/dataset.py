@@ -7,7 +7,7 @@ from redis import Redis
 from fastapi import APIRouter
 from fastapi import Query, Path, Depends
 
-from app.currency_types import CurrencyPair
+from app.currency_types import CurrencyPair, PriceDatasetRequest
 import app.common.constants as const
 from app.common.utils import gen_random_alfa
 from app.common.mem_cache import mem_cache, MemCache
@@ -19,18 +19,7 @@ def get_mem_cache() -> MemCache:
     return mem_cache
 
 
-class PriceDatasetRequest(BaseModel):
-    symbol: Annotated[CurrencyPair, Field(title="Symbol code")]
-    start_date: Annotated[datetime, Field(title="Start date")]
-    end_date: Annotated[datetime | None, Field(title="End date of the range. "
-                                                     "Optional and ignored if 'records' > 0")] = None
-    trend: Annotated[float | None, Field(title="Trend direction and strength. Positive for upward trend, "
-                                               "negative for downward trend, zero for no trend")] = 0.0
-    volatility: Annotated[float | None, Field(title="Volatility level. "
-                                                    "Higher values indicate more price fluctuations", ge=0)] = 0.1
-    spred_max: Annotated[float | None, Field(title="Maximum spread value", gt=0)] = 0.001
-    spread_min: Annotated[float | None, Field(title="Minimum spread value", gt=0)] = 0.0001
-    records: Annotated[int | None, Field(description="Number of records to produce", gt=0)] = 1000
+
 
 
 @router.post("/request/")

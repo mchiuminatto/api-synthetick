@@ -1,56 +1,77 @@
-from app.services.date_range_calculations import PeriodsCalculator
 from app.services.price_services import PriceGenerator
-"""
-Strategy to produce price
-
-Generate chunks of reduced size and then store them on the database
-asynchronously
-
-"""
+from app.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
 
 
-class TestPeriodsCalculations:
+class TestPriceGeneration:
+    def test_generate_tick_small_range(self):
+        generator: PriceGenerator = PriceGenerator(trend=Trend.FLAT,
+                                                   volatility_range=0.01,
+                                                   spread_min=0.1,
+                                                   spread_max=1,
+                                                   remove_weekend=False,
+                                                   instrument_type=InstrumentType,
+                                                   frequency=TimeFrame.TICK
+                                                   )
+        data_set = generator.produce(date_from="2023-01-01 00:00:00", date_to="2023-01-02 00:00:00", init_value=1.300)
 
-    def test_periods_calculation_intraday_h1(self):
-        """ Test the calculation of periods between two dates
-        including weekends
-
-        """
-
-        period_calc = PeriodsCalculator()
-        assert periods_calc.compute("2025-01-01 00:00:00", "2025-01-02 00:00:00", "H1") == 24
-
-    def test_periods_calculation_intraday_h4(self):
-        """ Test the calculation of periods between two dates
-        including weekends
-
-        """
-
-        period_calc = PeriodsCalculator()
-        assert periods_calc.compute("2025-01-01 00:00:00", "2025-01-02 00:00:00", "H4") == 6
+        assert data_set is not None
+        assert data_set.index[0] == "2023-01-01 00:00:00"
+        assert data_set.index[-1] == "2023-01-02 00:00:00"
+        assert data_set["ask"]-data_set["bid"].min() >= 0.1
+        assert data_set["ask"]-data_set["bid"].max() <= 1
 
 
-    def test_periods_calculation_h4_no_weekend(self):
-        """ Test the calculation of periods between two dates
-        including weekends
+    def test_generate_tick_large_range(self):
+        generator: PriceGenerator = PriceGenerator(trend=Trend.FLAT,
+                                                   volatility_range=0.01,
+                                                   spread_min=0.1,
+                                                   spread_max=1,
+                                                   remove_weekend=False,
+                                                   instrument_type=InstrumentType,
+                                                   frequency=TimeFrame.TICK
+                                                   )
+        data_set = generator.produce(date_from="2023-01-01 00:00:00", date_to="2023-02-01 00:00:00", init_value=1.300)
 
-        """
+        assert data_set is not None
+        assert data_set.index[0] == "2023-01-01 00:00:00"
+        assert data_set.index[-1] == "2023-02-01 00:00:00"
+        assert data_set["ask"] - data_set["bid"].min() >= 0.1
+        assert data_set["ask"] - data_set["bid"].max() <= 1
 
-        period_calc = PeriodsCalculator()
-        assert periods_calc.compute("2025-01-01 00:00:00", "2025-01-03 00:00:00", "H4") == 12
+    def test_generate_ohlc_small_range(self):
+        generator: PriceGenerator = PriceGenerator(trend=Trend.FLAT,
+                                                   volatility_range=0.01,
+                                                   spread_min=0.1,
+                                                   spread_max=1,
+                                                   remove_weekend=False,
+                                                   instrument_type=InstrumentType,
+                                                   frequency=TimeFrame.H1,
+                                                   price_side=PriceSide.BID
+                                                   )
+        data_set = generator.produce(date_from="2023-01-01 00:00:00", date_to="2023-01-02 00:00:00", init_value=1.300)
+
+        assert data_set is not None
+        assert data_set.index[0] == "2023-01-01 00:00:00"
+        assert data_set.index[-1] == "2023-01-02 00:00:00"
+        assert data_set.columns.to_list() == ["open", "high", "low", "close"]
 
 
+    def test_generate_ohlc_large_range(self):
+        generator: PriceGenerator = PriceGenerator(trend=Trend.FLAT,
+                                                   volatility_range=0.01,
+                                                   spread_min=0.1,
+                                                   spread_max=1,
+                                                   remove_weekend=False,
+                                                   instrument_type=InstrumentType,
+                                                   frequency=TimeFrame.H1,
+                                                   price_side=PriceSide.BID
 
-    def test_periods_calculation_h4_weekend(self):
-        """ Test the calculation of periods between two dates
-        including weekends
+                                                   )
+        data_set = generator.produce(date_from="2023-01-01 00:00:00", date_to="2023-01-02 00:00:00", init_value=1.300)
 
-        """
-
-        period_calc = PeriodsCalculator()
-        assert periods_calc.compute("2025-01-03 00:00:00", "2025-01-06 00:00:00", "H4") == 0
-
-    def test_price_generator_one_chunk(self):
-        pass
+        assert data_set is not None
+        assert data_set.index[0] == "2023-01-01 00:00:00"
+        assert data_set.index[-1] == "2023-01-02 00:00:00"
+        assert data_set.columns.to_list() == ["open", "high", "low", "close"]
 
 
