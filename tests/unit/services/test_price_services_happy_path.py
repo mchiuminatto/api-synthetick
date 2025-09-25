@@ -9,7 +9,7 @@ class TestPriceGeneration:
                                                    spread_min=0.1,
                                                    spread_max=1,
                                                    remove_weekend=False,
-                                                   instrument_type=InstrumentType,
+                                                   instrument_type=InstrumentType.FOREX,
                                                    frequency=TimeFrame.TICK
                                                    )
         data_set = generator.produce(date_from="2023-01-01 00:00:00", date_to="2023-01-02 00:00:00", init_value=1.300)

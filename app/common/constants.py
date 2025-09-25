@@ -22,3 +22,7 @@ PROJECT_NAME = "Synthetick API"
 VERSION = "1.0.0"
 
 REQUEST_ID_SIZE = 12
+
+TICK_FREQUENCY = "s1"
+
+
