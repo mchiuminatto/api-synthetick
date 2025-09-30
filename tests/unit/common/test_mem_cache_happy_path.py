@@ -1,5 +1,9 @@
 from app.common.mem_cache import MemCacheFactory
 
+# TODO: Ensure Redis server is running before executing these tests
+# TODO: Consider using a mock Redis server for isolated unit tests
+# TODO: Add tests for edge cases and error handling
+
 
 class TestMemCache:
     def setup_method(self):

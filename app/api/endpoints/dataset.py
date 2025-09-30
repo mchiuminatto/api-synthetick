@@ -20,8 +20,6 @@ def get_mem_cache() -> MemCache:
 
 
 
-
-
 @router.post("/request/")
 def gen_price_by_start_date_and_records(
         price_data_request: PriceDatasetRequest,

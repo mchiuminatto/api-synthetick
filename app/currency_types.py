@@ -8,6 +8,7 @@ class PriceSide(str, Enum):
     BID = "bid"
     ASK = "ask"
 
+
 class InstrumentType(str, Enum):
     FOREX = "forex"
     STOCK = "stock"
@@ -15,6 +16,7 @@ class InstrumentType(str, Enum):
     COMMODITY = "commodity"
     ETF = "etf"
     INDEX = "index"
+
 
 class CurrencyPair(str, Enum):
     EURUSD = "EURUSD"
@@ -57,9 +59,36 @@ class PriceDatasetRequest(BaseModel):
     end_date: Annotated[datetime | None, Field(title="End date of the range. "
                                                      "Optional and ignored if 'records' > 0")] = None
     trend: Annotated[float | None, Field(title="Trend direction and strength. Positive for upward trend, "
-                                               "negative for downward trend, zero for no trend")] = 0.0
+                                               "negative for downward trend, zero for no trend",
+                                         examples=[-0.1, 0, 0.1])] = 0.0
     volatility: Annotated[float | None, Field(title="Volatility level. "
                                                     "Higher values indicate more price fluctuations", ge=0)] = 0.1
     spred_max: Annotated[float | None, Field(title="Maximum spread value", gt=0)] = 0.001
     spread_min: Annotated[float | None, Field(title="Minimum spread value", gt=0)] = 0.0001
     records: Annotated[int | None, Field(description="Number of records to produce", gt=0)] = 1000
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [{
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01T00:00:00",
+                "end_date": "2023-01-02T00:00:00",
+                "trend": 0.1,
+                "volatility": 0.01,
+                "spread_min": 0.0001,
+                "spred_max": 0.001,
+                "records": 1000
+            },
+                {
+                    "symbol": "GBPUSD",
+                    "start_date": "2023-01-01T00:00:00",
+                    "end_date": "2023-01-10T00:00:00",
+                    "trend": -0.1,
+                    "volatility": 0.05,
+                    "spread_min": 0.0002,
+                    "spred_max": 0.002,
+                    "records": 5000
+                }
+            ]
+        }
+    }

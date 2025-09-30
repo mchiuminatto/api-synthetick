@@ -58,6 +58,7 @@ mccabe==0.7.0
 mdurl==0.1.2
 more-itertools==10.8.0
 mpldatacursor>=0.7
+mplfinance==0.12.10b0
 msgpack==1.1.1
 narwhals==2.3.0
 ndindex==1.10.0
