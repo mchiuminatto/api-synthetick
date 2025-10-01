@@ -1,13 +1,12 @@
 from datetime import datetime
 from typing import Annotated
-from pydantic import BaseModel, Field
 
 from redis import Redis
 
 from fastapi import APIRouter
 from fastapi import Query, Path, Depends
 
-from app.currency_types import CurrencyPair, PriceDatasetRequest
+from app.currency_types import PriceDatasetRequest
 import app.common.constants as const
 from app.common.utils import gen_random_alfa
 from app.common.mem_cache import mem_cache, MemCache
@@ -17,7 +16,6 @@ router = APIRouter()
 
 def get_mem_cache() -> MemCache:
     return mem_cache
-
 
 
 @router.post("/request/")
@@ -30,8 +28,7 @@ def gen_price_by_start_date_and_records(
     specified number of records."""
 
     # set session in memcache
-
-    # TODO: use dependency injection 
+    # TODO: use dependency injection
 
     session_key = gen_random_alfa(const.REQUEST_ID_SIZE)
 

@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 DATABASE_USER = os.getenv("DATABASE_USER", "user")
@@ -24,5 +23,3 @@ VERSION = "1.0.0"
 REQUEST_ID_SIZE = 12
 
 TICK_FREQUENCY = "1s"
-
-

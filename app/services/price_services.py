@@ -29,7 +29,7 @@ class PriceDaSetSpecification:
 class PriceGenerator(abc.ABC):
 
     @abc.abstractmethod
-    def produce(self, date_from: str, date_to: str, init_value: float):
+    async def produce(self, date_from: str, date_to: str, init_value: float):
         pass
 
 
@@ -47,7 +47,7 @@ class TickPriceDataSet(PriceGenerator):
             remove_weekend=specification.remove_weekend,
         )
 
-    def produce(self, date_from: datetime, date_to: datetime, init_value: float) -> pd.DataFrame:
+    async def produce(self, date_from: datetime, date_to: datetime, init_value: float) -> pd.DataFrame:
         self.ticks.produce(date_from=date_from, date_to=date_to,
                            frequency=const.TICK_FREQUENCY,
                            init_value=init_value)
@@ -71,7 +71,7 @@ class OHLCPriceDataSet(PriceGenerator):
             time_frame=specification.frequency
         )
 
-    def produce(self, date_from: datetime, date_to: datetime, init_value: float):
+    async def produce(self, date_from: datetime, date_to: datetime, init_value: float):
         self.ohlc.produce(date_from=date_from, date_to=date_to, init_value=init_value)
         return self.ohlc.ohlc_time_series[self.specification.price_side.value]
 

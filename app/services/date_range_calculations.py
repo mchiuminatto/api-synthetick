@@ -2,7 +2,6 @@ from datetime import datetime
 import pandas as pd
 import abc
 import enum
-from app.currency_types import TimeFrame
 
 
 class TimeSeriesType(str, enum.Enum):
@@ -39,7 +38,6 @@ class RegularTimeSeries(TimeSeriesSizeCalculator):
         self.include_weekends: bool = include_weekends
 
     def compute(self, start_date: datetime, end_date: datetime):
-
         date_index = pd.date_range(start_date, end_date, freq=self.frequency)
         if not self.include_weekends:
             mask = date_index.day_of_week < 5
