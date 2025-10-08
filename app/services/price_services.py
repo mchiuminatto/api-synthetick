@@ -1,16 +1,14 @@
-import asyncio
-
 import pandas as pd
 from synthetick import synthetick
-from app.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
+from app.services.currency_types import TimeFrame, InstrumentType, PriceSide
 from app.common import constants as const
 import abc
 from dataclasses import dataclass
 from datetime import datetime
 
+
 @dataclass
 class PriceDaSetSpecification:
-
     symbol: str
     trend: float
     volatility_range: float
@@ -54,7 +52,6 @@ class TickPriceDataSet(PriceGenerator):
         return self.ticks.price_time_series
 
 
-
 class OHLCPriceDataSet(PriceGenerator):
 
     def __init__(self, specification: PriceDaSetSpecification):
@@ -75,6 +72,7 @@ class OHLCPriceDataSet(PriceGenerator):
         self.ohlc.produce(date_from=date_from, date_to=date_to, init_value=init_value)
         return self.ohlc.ohlc_time_series[self.specification.price_side.value]
 
+
 class PriceGeneratorFactory:
 
     @staticmethod
@@ -83,5 +81,17 @@ class PriceGeneratorFactory:
             return TickPriceDataSet(specification)
         else:
             return OHLCPriceDataSet(specification)
+class PriceProducerService:
+    """ Service to produce price data sets based on specifications. """
 
+    @staticmethod
+    async def generate_price_data_set(specification: PriceDaSetSpecification,
+                                      date_from: datetime,
+                                      date_to: datetime,
+                                      init_value: float) -> pd.DataFrame:
+
+
+
+        generator = PriceGeneratorFactory().create_price_data_set(specification)
+        return await generator.produce(date_from=date_from, date_to=date_to, init_value=init_value)
 

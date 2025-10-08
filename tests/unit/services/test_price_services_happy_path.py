@@ -1,7 +1,6 @@
-import asyncio
 import pytest
 from app.services.price_services import PriceDaSetSpecification, PriceGeneratorFactory
-from app.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
+from app.services.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
 from datetime import datetime
 
 
@@ -98,3 +97,41 @@ class TestPriceGeneration:
         assert data_set.index[0] == datetime.strptime("2023-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
         assert data_set.index[-1] == datetime.strptime("2023-05-01 00:00:00", "%Y-%m-%d %H:%M:%S")
         assert data_set.columns.to_list() == ["open", "high", "low", "close"]
+
+
+class TestPriceProducerService:
+
+    """
+    Test the service that coordinates the price generation and the database upload
+
+    This service will be called from API endpoints
+    1. It will create the price generator based on the specification
+    2. It will call the generator to produce the data set
+    3. It will upload the data set to the database
+    """
+
+    @pytest.mark.asyncio
+    async def test_generate_price_data_set(self):
+        price_spec: PriceDaSetSpecification = PriceDaSetSpecification(
+            symbol="EURUSD",
+            trend=Trend.FLAT,
+            volatility_range=0.01,
+            spread_min=1,
+            spread_max=2,
+            remove_weekend=False,
+            records=0,
+            instrument_type=InstrumentType.FOREX,
+            frequency=TimeFrame.H1,
+            pip_position=-4,
+            price_side=PriceSide.BID
+        )
+        producer = PriceProducerService()
+        initiation_status = await producer.produce_price_data_set(
+            specification=price_spec,
+            date_from="2023-01-01 00:00:00",
+            date_to="2023-05-01 00:00:00",
+            init_value=1.300)
+
+        assert initiation_status is True
+
+

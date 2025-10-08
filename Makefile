@@ -18,3 +18,6 @@ test:
 
 cov-report:
 	coverage report -m
+
+reverse:
+	pyreverse --verbose -o png ./app --output-directory ./docs/images

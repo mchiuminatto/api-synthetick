@@ -53,7 +53,7 @@ class Trend(float, Enum):
     DOWN_WEAK = -0.1
 
 
-class PriceDatasetRequest(BaseModel):
+class PriceDatasetDescriptor(BaseModel):
     symbol: Annotated[CurrencyPair, Field(title="Symbol code")]
     start_date: Annotated[datetime, Field(title="Start date")]
     end_date: Annotated[datetime | None, Field(title="End date of the range. "

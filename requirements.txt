@@ -87,6 +87,7 @@ pydantic_core==2.33.2
 pyerfa==2.0.1.5
 pyflakes==3.4.0
 Pygments==2.19.2
+pylint==3.3.8
 pyparsing==3.2.3
 pyperclip==1.9.0
 pytest==8.4.1
