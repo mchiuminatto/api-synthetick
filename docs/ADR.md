@@ -14,6 +14,9 @@ the API isolated and decoupled of those changes.
 
 Apply the Adapter Pattern to isolate the price generation library from the API request.
 
+```plantuml
+
+
 @startuml
 actor Client
 boundary API
@@ -28,7 +31,7 @@ control PriceRequestProcessor as processor
     
 @enduml
 
-
+```
 
 
 ## Scalable Price Generation Processing
