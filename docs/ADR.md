@@ -15,9 +15,6 @@ the API isolated and decoupled of those changes.
 Apply the Adapter Pattern to isolate the price generation library from the API request.
 
 ```mairmaid
-
-
-@startuml
 actor Client
 boundary API
 control PriceRequestProcessor as processor
@@ -29,8 +26,6 @@ control PriceRequestProcessor as processor
     PriceProducer --> processor: PriceDataset
     processor --> PriceUploader: upload(PriceDataset)
     
-@enduml
-
 ```
 
 
