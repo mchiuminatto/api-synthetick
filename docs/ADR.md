@@ -14,18 +14,18 @@ the API isolated and decoupled of those changes.
 
 Apply the Adapter Pattern to isolate the price generation library from the API request.
 
-```mairmaid
+```mermaid
 actor Client
 boundary API
 control PriceRequestProcessor as processor
-    Client --> API : Request
-    API --> API : Renders Request
-    API -\\ processor : Produce(PriceDatasetSpecification)
-    processor --> API: Status
-    processor --> PriceProducer: produce(PriceDatasetSpecification)
-    PriceProducer --> processor: PriceDataset
-    processor --> PriceUploader: upload(PriceDataset)
-    
+    Client ->> API : Request
+    API ->> API : Renders Request
+    API ->> processor : Produce(PriceDatasetSpecification)
+    processor ->> API: Status
+    processor ->> PriceProducer: produce(PriceDatasetSpecification)
+    PriceProducer ->> processor: PriceDataset
+    processor ->> PriceUploader: upload(PriceDataset)
+ 
 ```
 
 
