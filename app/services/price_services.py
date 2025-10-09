@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 @dataclass
-class PriceDaSetSpecification:
+class PriceDataSetSpecification:
     symbol: str
     trend: float
     volatility_range: float
@@ -33,7 +33,7 @@ class PriceGenerator(abc.ABC):
 
 class TickPriceDataSet(PriceGenerator):
 
-    def __init__(self, specification: PriceDaSetSpecification):
+    def __init__(self, specification: PriceDataSetSpecification):
         self.specification = specification
 
         self.ticks: synthetick.Ticks = synthetick.Ticks(
@@ -54,7 +54,7 @@ class TickPriceDataSet(PriceGenerator):
 
 class OHLCPriceDataSet(PriceGenerator):
 
-    def __init__(self, specification: PriceDaSetSpecification):
+    def __init__(self, specification: PriceDataSetSpecification):
         self.specification = specification
 
         self.ohlc: synthetick.OHLC = synthetick.OHLC(
@@ -76,7 +76,7 @@ class OHLCPriceDataSet(PriceGenerator):
 class PriceGeneratorFactory:
 
     @staticmethod
-    def create_price_data_set(specification: PriceDaSetSpecification) -> PriceGenerator:
+    def create_price_data_set(specification: PriceDataSetSpecification) -> PriceGenerator:
         if specification.frequency == TimeFrame.TICK:
             return TickPriceDataSet(specification)
         else:
@@ -85,7 +85,7 @@ class PriceProducerService:
     """ Service to produce price data sets based on specifications. """
 
     @staticmethod
-    async def generate_price_data_set(specification: PriceDaSetSpecification,
+    async def generate_price_data_set(specification: PriceDataSetSpecification,
                                       date_from: datetime,
                                       date_to: datetime,
                                       init_value: float) -> pd.DataFrame:

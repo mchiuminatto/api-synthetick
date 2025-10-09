@@ -1,5 +1,5 @@
 import pytest
-from app.services.price_services import PriceDaSetSpecification, PriceGeneratorFactory
+from app.services.price_services import PriceDataSetSpecification, PriceGeneratorFactory
 from app.services.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
 from datetime import datetime
 
@@ -8,7 +8,7 @@ class TestPriceGeneration:
 
     @pytest.mark.asyncio
     async def test_generate_tick_small_range(self):
-        price_spec: PriceDaSetSpecification = PriceDaSetSpecification(
+        price_spec: PriceDataSetSpecification = PriceDataSetSpecification(
             symbol="EURUSD",
             trend=Trend.FLAT,
             volatility_range=0.01,
@@ -31,7 +31,7 @@ class TestPriceGeneration:
 
     @pytest.mark.asyncio
     async def test_generate_tick_large_range(self):
-        price_spec: PriceDaSetSpecification = PriceDaSetSpecification(
+        price_spec: PriceDataSetSpecification = PriceDataSetSpecification(
             symbol="EURUSD",
             trend=Trend.FLAT,
             volatility_range=0.01,
@@ -54,7 +54,7 @@ class TestPriceGeneration:
 
     @pytest.mark.asyncio
     async def test_generate_ohlc_small_range(self):
-        price_spec: PriceDaSetSpecification = PriceDaSetSpecification(
+        price_spec: PriceDataSetSpecification = PriceDataSetSpecification(
             symbol="EURUSD",
             trend=Trend.FLAT,
             volatility_range=0.01,
@@ -77,7 +77,7 @@ class TestPriceGeneration:
 
     @pytest.mark.asyncio
     async def test_generate_ohlc_large_range(self):
-        price_spec: PriceDaSetSpecification = PriceDaSetSpecification(
+        price_spec: PriceDataSetSpecification = PriceDataSetSpecification(
             symbol="EURUSD",
             trend=Trend.FLAT,
             volatility_range=0.01,
@@ -112,7 +112,7 @@ class TestPriceProducerService:
 
     @pytest.mark.asyncio
     async def test_generate_price_data_set(self):
-        price_spec: PriceDaSetSpecification = PriceDaSetSpecification(
+        price_spec: PriceDataSetSpecification = PriceDataSetSpecification(
             symbol="EURUSD",
             trend=Trend.FLAT,
             volatility_range=0.01,

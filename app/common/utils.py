@@ -1,6 +1,7 @@
 from string import ascii_uppercase, digits
 import random
 import hashlib
+import uuid
 
 
 def gen_random_alfa(size: int) -> str:
@@ -13,3 +14,9 @@ def gen_using_hash(input_string: str, size: int) -> str:
     hash_object = hashlib.sha256(input_string.encode())
     hex_dig = hash_object.hexdigest()
     return hex_dig[:size]
+
+
+def get_request_id() -> str:
+    """Generate a unique request ID."""
+    return str(uuid.uuid4())
+

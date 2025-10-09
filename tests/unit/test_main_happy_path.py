@@ -31,7 +31,7 @@ def test_request_data_date_records():
     assert data["symbol"] == "EURUSD"
     assert data["start_date"] == "2023-01-01T00:00:00"
     assert data["records"] == 1000
-    assert len(data["request_id"]) == const.REQUEST_ID_SIZE
+    assert len(data["request_id"]) == 36
 
 
 def test_request_data_date_end_date():
@@ -53,7 +53,7 @@ def test_request_data_date_end_date():
     assert data["start_date"] == "2023-01-01T00:00:00"
     assert data["end-date"] == "2023-01-10T00:00:00"
     assert data["records"] == 1000  # Default value
-    assert len(data["request_id"]) == const.REQUEST_ID_SIZE
+    assert len(data["request_id"]) == 36
     assert data["message"] == "Data generation is not implemented yet."
 
 

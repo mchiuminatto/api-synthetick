@@ -8,7 +8,7 @@ from fastapi import Query, Path, Depends
 
 from app.services.currency_types import PriceDatasetDescriptor
 import app.common.constants as const
-from app.common.utils import gen_random_alfa
+from app.common.utils import get_request_id
 from app.common.mem_cache import mem_cache, MemCache
 
 router = APIRouter()
@@ -30,7 +30,7 @@ def gen_price_by_start_date_and_records(
     # set session in memcache
     # TODO: use dependency injection
 
-    session_key = gen_random_alfa(const.REQUEST_ID_SIZE)
+    session_key = get_request_id()
 
     mem_cache_cli.set(session_key, "status", "not-started")
     mem_cache_cli.set(session_key, "records-processed", 0)
