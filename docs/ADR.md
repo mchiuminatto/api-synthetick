@@ -14,7 +14,7 @@ the API isolated and decoupled of those changes.
 
 Apply the Adapter Pattern to isolate the price generation library from the API request.
 
-```plantuml
+```mairmaid
 
 
 @startuml
