@@ -14,20 +14,96 @@ the API isolated and decoupled of those changes.
 
 Apply the Adapter Pattern to isolate the price generation library from the API request.
 
+#### Full Produce Rquests Sequence
+
 ```mermaid
-actor Client
-boundary API
-control PriceRequestProcessor as processor
+sequenceDiagram
     Client ->> API : Request
     API ->> API : Renders Request
     API ->> processor : Produce(PriceDatasetSpecification)
-    processor ->> API: Status
+    processor -->> API: Status
     processor ->> PriceProducer: produce(PriceDatasetSpecification)
     PriceProducer ->> processor: PriceDataset
     processor ->> PriceUploader: upload(PriceDataset)
- 
+
 ```
 
+#### Price Generation Sequence
+
+```mermaid
+sequenceDiagram
+    processor ->> PriceProducer : produce(PriceDatasetSpecification)
+    PriceProducer -->> HistoricPriceProducerAdapter: produce(PriceDatasetSpecification)
+    
+    
+    
+```
+
+####E  Synthetick Adapter 
+
+```mermaid
+
+classDiagram
+
+    
+
+    class PriceProducer {
+        <<abstract>> 
+        +produce(PriceDatasetSpecification)
+    }
+    
+    class HistoricPriceProducerAdapter {
+        +produce(PriceDatasetSpecification)
+    }
+    
+    class SynthetickProducer {
+        <<abstract>>
+        +produce(SynthetickPriceSpecification)
+    }
+
+    class SynthetickHistoricProducer {
+        +produce(SynthetickPriceSpecification)
+    }
+    
+
+    PriceProducer <|-- HistoricPriceProducerAdapter 
+    SynthetickProducer <|-- SynthetickHistoricProducer
+    HistoricPriceProducerAdapter --o SynthetickHistoricProducer
+
+
+```
+
+#### Synthetic Historic Factory/Facade
+
+```mermaid
+classDiagram    
+
+note for Synthetick "Synthetic Facade"
+class HistoricPriceGenerator {
+    <<abstract>>
+    +produce(SynthetickPriceSpecification)
+}
+
+class TickPriceGenerator {
+    +produce(SynthetickPriceSpecification)
+}
+
+class OHLCPriceGenerator {
+    +produce(SynthetickPriceSpecification)
+}
+class SyntheticHistoricFactory {
+    +CreateGenerator(SynthetickPriceSpecification): HistoricPriceGenerator
+}
+
+class Synthetick{
+    produce(SynthetickPriceSpecification)
+}
+
+SyntheticHistoricFactory o-- HistoricPriceGenerator
+HistoricPriceGenerator <|-- TickPriceGenerator
+HistoricPriceGenerator <|-- OHLCPriceGenerator
+Synthetick o-- SyntheticHistoricFactory
+```
 
 ## Scalable Price Generation Processing
 
