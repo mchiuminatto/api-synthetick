@@ -78,7 +78,7 @@ classDiagram
 ```mermaid
 classDiagram    
 
-note for Synthetick "Synthetic Facade"
+note for SynthetickProducer "Synthetic Facade"
 class HistoricPriceGenerator {
     <<abstract>>
     +produce(SynthetickPriceSpecification)
@@ -92,17 +92,17 @@ class OHLCPriceGenerator {
     +produce(SynthetickPriceSpecification)
 }
 class SyntheticHistoricFactory {
-    +CreateGenerator(SynthetickPriceSpecification): HistoricPriceGenerator
+    +create_generator(SynthetickPriceSpecification): HistoricPriceGenerator
 }
 
-class Synthetick{
+class SynthetickProducer{
     produce(SynthetickPriceSpecification)
 }
 
 SyntheticHistoricFactory o-- HistoricPriceGenerator
 HistoricPriceGenerator <|-- TickPriceGenerator
 HistoricPriceGenerator <|-- OHLCPriceGenerator
-Synthetick o-- SyntheticHistoricFactory
+SynthetickProducer o-- SyntheticHistoricFactory
 ```
 
 ## Scalable Price Generation Processing

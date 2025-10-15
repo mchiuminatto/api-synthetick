@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Annotated
 from enum import Enum
 from pydantic import BaseModel, Field
+from dataclasses import dataclass
 
 
 class PriceSide(str, Enum):
@@ -53,6 +54,22 @@ class Trend(float, Enum):
     DOWN_WEAK = -0.1
 
 
+@dataclass
+class PriceDataSetSpecification:
+    symbol: str
+    trend: float
+    volatility_range: float
+    spread_min: float
+    spread_max: float
+    remove_weekend: bool
+    records: int
+    instrument_type: InstrumentType
+    frequency: TimeFrame
+    pip_position: int
+    price_side: PriceSide | None = None
+
+
+
 class PriceDatasetDescriptor(BaseModel):
     symbol: Annotated[CurrencyPair, Field(title="Symbol code")]
     start_date: Annotated[datetime, Field(title="Start date")]
@@ -92,3 +109,5 @@ class PriceDatasetDescriptor(BaseModel):
             ]
         }
     }
+
+

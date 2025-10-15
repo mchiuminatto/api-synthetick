@@ -1,6 +1,6 @@
 import pandas as pd
 from synthetick import synthetick
-from app.services.currency_types import TimeFrame, InstrumentType, PriceSide
+from app.models.currency_types import TimeFrame, InstrumentType, PriceSide
 from app.common import constants as const
 import abc
 from dataclasses import dataclass

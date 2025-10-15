@@ -1,6 +1,6 @@
 import pytest
 from app.services.price_services import PriceDataSetSpecification, PriceGeneratorFactory
-from app.services.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
+from app.models.currency_types import Trend, TimeFrame, InstrumentType, PriceSide
 from datetime import datetime
 
 

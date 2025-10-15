@@ -6,7 +6,7 @@ from redis import Redis
 from fastapi import APIRouter
 from fastapi import Query, Path, Depends
 
-from app.services.currency_types import PriceDatasetDescriptor
+from app.models.currency_types import PriceDatasetDescriptor
 import app.common.constants as const
 from app.common.utils import get_request_id
 from app.common.mem_cache import mem_cache, MemCache

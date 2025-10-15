@@ -1,5 +1,5 @@
 from app.services.date_range_calculations import TimeSeriesSizeCalculatorFactory, TimeSeriesType
-from app.services.currency_types import TimeFrame
+from app.models.currency_types import TimeFrame
 from datetime import datetime
 
 
